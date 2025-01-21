@@ -43,4 +43,21 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+// UPDATE a task
+router.put("/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title } = req.body;
+      const updatedTask = await Task.findByIdAndUpdate(
+        id,
+        { title },
+        { new: true } // Return updated task
+      );
+      res.json(updatedTask);
+    } catch (error) {
+      res.status(500).json({ error: "Error updating task" });
+    }
+  });
+  
+
 module.exports = router;

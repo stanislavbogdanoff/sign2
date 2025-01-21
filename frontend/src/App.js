@@ -6,6 +6,8 @@ import "./App.css";
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState("");
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingTitle, setEditingTitle] = useState("");
 
   // Fetch tasks from the backend
   useEffect(() => {
@@ -49,6 +51,36 @@ const App = () => {
     }
   };
 
+  // Update a task
+  const updateTask = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/tasks/${id}`,
+        { title: editingTitle },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      setTasks(
+        tasks.map((task) =>
+          task._id === id ? { ...task, title: response.data.title } : task
+        )
+      );
+      setEditingTaskId(null); // Exit editing mode
+      setEditingTitle(""); // Clear editing title
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
+
+  // Start editing a task
+  const startEditing = (id) => {
+    setEditingTaskId(id);
+  };
+
+  // Handle title change during editing
+  const handleEditChange = (e) => {
+    setEditingTitle(e.target.value);
+  };
+
   return (
     <div className="App">
       <h1>Todo App</h1>
@@ -60,7 +92,17 @@ const App = () => {
         />
         <button onClick={addTask}>Add Task</button>
       </div>
-      <TodoList tasks={tasks} deleteTask={deleteTask} />
+      <TodoList 
+      tasks={tasks} 
+      deleteTask={deleteTask}
+      updateTask={updateTask}
+      editingTitle={editingTitle}
+      setEditingTitle={setEditingTitle}
+      editingTaskId={editingTaskId}
+      setEditingTaskId={setEditingTaskId}
+      startEditing={startEditing}
+      handleEditChange={handleEditChange} 
+      />
     </div>
   );
 };
