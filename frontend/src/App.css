@@ -1,38 +1,80 @@
+/* App.css */
+
+/* Center the app in the middle of the screen */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4; /* Light gray background */
+}
+
+/* Style the main app container */
 .App {
   text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow effect */
+  width: 300px; /* Set a fixed width */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Add spacing below the title */
+h1 {
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Style input fields */
+input {
+  width: 80%; /* Make input take most of the width */
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+/* Style buttons */
+button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  background-color: #007bff; /* Blue background */
   color: white;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
-.App-link {
-  color: #61dafb;
+/* Change button color when hovered */
+button:hover {
+  background-color: #0056b3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Remove default list styles */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Style list items */
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+/* Allow task text to take available space */
+span {
+  flex: 1;
+}
+
+/* Adjust the width of input fields inside the list */
+input[type="text"] {
+  width: 70%;
 }
