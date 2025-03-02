@@ -11,6 +11,6 @@ A simple Todo application built with **MERN stack** (MongoDB, Express, React, No
 
 ## Technologies Used
 
-- **Frontend**: React.js
+- **Frontend**: Vite+React+TypeScript
 - **Backend**: Node.js, Express
 - **Database**: MongoDB (Mongoose ORM)
