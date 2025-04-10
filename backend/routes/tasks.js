@@ -56,7 +56,7 @@ const router = express.Router();
  */
 router.get("/", async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find().populate("tags").populate("category");
     res.json(tasks);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -87,6 +87,10 @@ router.get("/", async (req, res) => {
  *               priority:
  *                 type: string
  *                 enum: [high, medium, low]
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       201:
  *         description: Task created successfully
@@ -100,23 +104,46 @@ router.get("/", async (req, res) => {
  *         description: Server error
  */
 router.post("/", async (req, res) => {
-  const { title, dueDate, priority } = req.body;
-  console.log("Received task data:", { title, dueDate, priority }); // Debugging log
-
-  if (!title) {
-    return res.status(400).json({ error: "Task title is required" });
-  }
-
   try {
+    console.log("Raw request body:", req.body);
+    console.log("Tags from request:", req.body.tags);
+    console.log("Type of tags:", typeof req.body.tags);
+
+    const { title, dueDate, priority, tags, category } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ error: "Task title is required" });
+    }
+
+    // Explicitly convert tag IDs to ObjectId if needed
+    const Tag = require("../models/Tag");
+    let tagIds = [];
+    if (Array.isArray(req.body.tags)) {
+      tagIds = req.body.tags;
+    } else if (typeof req.body.tags === "string") {
+      tagIds = [req.body.tags];
+    }
+
+    console.log("Processed tag IDs:", tagIds);
+
     const newTask = new Task({
       title,
       dueDate: dueDate || null,
       priority: priority || "medium",
+      tags: tagIds,
+      category: category || null,
     });
-    await newTask.save();
-    res.status(201).json(newTask);
+
+    console.log("Task before save:", newTask);
+    const savedTask = await newTask.save();
+    console.log("Task after save:", savedTask);
+
+    const populatedTask = await Task.findById(savedTask._id).populate("tags").populate("category").lean().exec();
+
+    console.log("Final populated task:", populatedTask);
+    res.status(201).json(populatedTask);
   } catch (err) {
-    console.error(err.message);
+    console.error("Error creating task:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -195,15 +222,26 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const updateData = { ...req.body };
 
-    const updatedTask = await Task.findByIdAndUpdate(
-      id,
-      req.body,
-      { new: true }, // Return the updated task
-    );
+    // Ensure tags is an array if present
+    if ("tags" in updateData) {
+      updateData.tags = Array.isArray(updateData.tags) ? updateData.tags : [];
+    }
+
+    const updatedTask = await Task.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    }).populate("tags");
+
+    if (!updatedTask) {
+      return res.status(404).json({ error: "Task not found" });
+    }
+
     res.json(updatedTask);
-  } catch (error) {
-    res.status(500).json({ error: "Error updating task" });
+  } catch (err) {
+    console.error("Error updating task:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 

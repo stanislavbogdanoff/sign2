@@ -3,16 +3,31 @@ import React from "react";
 import "./TodoList.css";
 
 // BLOCK 2: Defining Interfaces
+interface Tag {
+  _id: string;
+  name: string;
+  color: string;
+}
+
+interface Category {
+  _id: string;
+  name: string;
+  color: string;
+}
+
 interface Task {
   _id: string; // Unique ID for the task
   title: string; // Task name
   completed: boolean; // True if done, False if not
   dueDate: string | null;
   priority: "high" | "medium" | "low" | null;
+  tags: Tag[];
+  category: string | null;
 }
 
 interface TodoListProps {
   tasks: Task[];
+  categories: Category[];
   deleteTask: (id: string) => void;
   updateTask: (id: string, updatedTask: Partial<Task>) => void;
   editingTitle: string;
@@ -26,6 +41,7 @@ interface TodoListProps {
 // BLOCK 3: Declares the TodoList Component
 const TodoList: React.FC<TodoListProps> = ({
   tasks,
+  categories,
   deleteTask,
   updateTask,
   editingTitle,
@@ -92,7 +108,7 @@ const TodoList: React.FC<TodoListProps> = ({
                       }}
                       className="save-button"
                     >
-                      Save
+                      <i className="fas fa-check"></i>
                     </button>
                   </div>
                 ) : (
@@ -100,19 +116,50 @@ const TodoList: React.FC<TodoListProps> = ({
                     <span className={`todo-title ${task.completed ? "completed" : ""}`}>{task.title}</span>
                     {task.dueDate && (
                       <span className={`due-date ${isOverdue(task.dueDate) ? "overdue" : ""}`}>
-                        Due: {formatDate(task.dueDate)}
+                        <i className="far fa-calendar-alt"></i> {formatDate(task.dueDate)}
                       </span>
                     )}
-                    <span className="priority-tag">
-                      {task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : "Low"} Priority
-                    </span>
+                    <div className="todo-metadata">
+                      <span className="priority-tag">
+                        <i className="fas fa-flag"></i>
+                        {task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : "Low"}
+                      </span>
+                      {task.category && (
+                        <span
+                          className="category-tag"
+                          style={{
+                            borderColor: categories.find((c) => c._id === task.category)?.color || "#42dcff",
+                            color: categories.find((c) => c._id === task.category)?.color || "#42dcff",
+                          }}
+                        >
+                          <i className="fas fa-folder"></i>{" "}
+                          {categories.find((c) => c._id === task.category)?.name || "Unknown Category"}
+                        </span>
+                      )}
+                      {task.tags && task.tags.length > 0 && (
+                        <div className="task-tags">
+                          {task.tags.map((tag) => (
+                            <span
+                              key={tag._id}
+                              className="task-tag"
+                              style={{
+                                borderColor: tag.color,
+                                color: tag.color,
+                              }}
+                            >
+                              <i className="fas fa-tag"></i> {tag.name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
 
               <div className="todo-actions">
                 <button onClick={() => deleteTask(task._id)} className="delete-button" title="Delete Task">
-                  Delete
+                  <i className="fas fa-trash-alt"></i> Delete
                 </button>
                 <button
                   onClick={() => {
@@ -122,7 +169,7 @@ const TodoList: React.FC<TodoListProps> = ({
                   className="edit-button"
                   title="Edit Task"
                 >
-                  Edit
+                  <i className="fas fa-edit"></i> Edit
                 </button>
               </div>
             </div>

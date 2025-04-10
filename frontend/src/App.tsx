@@ -2,41 +2,71 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import TodoList from "./components/TodoList.tsx";
+import TagSelector from "./components/TagSelector.tsx";
+import TagManager from "./components/TagManager.tsx";
+import CategoryManager from "./components/CategoryManager.tsx";
+import CategorySelector from "./components/CategorySelector.tsx";
 import "./App.css";
 
-// BLOCK 2: Defining Task Interface
+// BLOCK 2: Defining Interfaces
+interface Tag {
+  _id: string;
+  name: string;
+  color: string;
+}
+
 interface Task {
   _id: string;
   title: string;
   completed: boolean;
   dueDate: string | null;
   priority: "high" | "medium" | "low" | null;
+  tags: Tag[];
+  category: string | null;
+}
+
+interface Category {
+  _id: string;
+  name: string;
+  description: string;
+  color: string;
+  taskCount: number;
 }
 
 // BLOCK 3: Setting Up State Variables
 const App: React.FC = () => {
-  // State for tasks, new task text, and editing controls
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [task, setTask] = useState<string>("");
   const [dueDate, setDueDate] = useState<string>("");
   const [priority, setPriority] = useState<"high" | "medium" | "low">("medium");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editingTitle, setEditingTitle] = useState<string>("");
   const [filter, setFilter] = useState<"all" | "completed" | "active">("all");
   const [sortBy, setSortBy] = useState<"dueDate" | "priority" | "title">("dueDate");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [filterCategory, setFilterCategory] = useState<string | null>(null);
+  const [filterTags, setFilterTags] = useState<string[]>([]);
 
-  // BLOCK 4: Fetch tasks from the backend on component mount
+  // BLOCK 4: Fetch tasks and tags from the backend
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get<Task[]>(`http://localhost:5000/api/tasks`);
-        console.log("Fetched tasks:", response.data); // Debugging log
-        setTasks(response.data);
+        const [tasksResponse, tagsResponse, categoriesResponse] = await Promise.all([
+          axios.get<Task[]>(`http://localhost:5000/api/tasks`),
+          axios.get<Tag[]>(`http://localhost:5000/api/tags`),
+          axios.get<Category[]>(`http://localhost:5000/api/categories`),
+        ]);
+        setTasks(tasksResponse.data);
+        setTags(tagsResponse.data);
+        setCategories(categoriesResponse.data);
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    fetchTasks();
+    fetchData();
   }, []);
 
   // BLOCK 5: Adding a Task
@@ -44,21 +74,28 @@ const App: React.FC = () => {
     if (!task) return;
 
     try {
-      console.log("Adding task:", task); // Debugging log
       const response = await axios.post<Task>(
         `http://localhost:5000/api/tasks`,
         {
           title: task,
           dueDate: dueDate || null,
           priority: priority,
+          tags: selectedTags,
+          category: selectedCategory,
         },
         { headers: { "Content-Type": "application/json" } },
       );
-      console.log("Task added response:", response.data);
-      setTasks([...tasks, response.data]);
+
+      // Update tasks with the populated response data
+      const newTask = response.data;
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+
+      // Reset form
       setTask("");
       setDueDate("");
       setPriority("medium");
+      setSelectedTags([]);
+      setSelectedCategory(null);
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -99,9 +136,23 @@ const App: React.FC = () => {
     setEditingTitle(e.target.value);
   };
 
+  // BLOCK 8: Handling Tags
+  const handleTagChange = (tagIds: string[]) => {
+    setSelectedTags(tagIds);
+  };
+
   const filteredTasks = tasks.filter((task) => {
-    if (filter === "completed") return task.completed;
-    if (filter === "active") return !task.completed;
+    // Status filter
+    if (filter === "completed" && !task.completed) return false;
+    if (filter === "active" && task.completed) return false;
+
+    // Category filter
+    if (filterCategory && task.category !== filterCategory) return false;
+
+    // Tags filter
+    if (filterTags.length > 0 && !filterTags.every((tagId) => task.tags.some((taskTag) => taskTag._id === tagId)))
+      return false;
+
     return true;
   });
 
@@ -122,6 +173,27 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Todo App</h1>
+
+      <TagManager
+        tags={tags}
+        onTagsUpdate={() => {
+          axios
+            .get<Tag[]>(`http://localhost:5000/api/tags`)
+            .then((response) => setTags(response.data))
+            .catch((error) => console.error("Error fetching tags:", error));
+        }}
+      />
+
+      <CategoryManager
+        categories={categories}
+        onCategoriesUpdate={() => {
+          axios
+            .get<Category[]>(`http://localhost:5000/api/categories`)
+            .then((response) => setCategories(response.data))
+            .catch((error) => console.error("Error fetching categories:", error));
+        }}
+      />
+
       <div className="task-controls">
         <div className="task-input">
           <input
@@ -141,6 +213,12 @@ const App: React.FC = () => {
             <option value="medium">Medium Priority</option>
             <option value="low">Low Priority</option>
           </select>
+          <CategorySelector
+            categories={categories}
+            selectedCategory={selectedCategory}
+            onChange={setSelectedCategory}
+          />
+          <TagSelector tags={tags} selectedTags={selectedTags} onChange={handleTagChange} />
           <button onClick={addTask} className="add-button">
             Add Task
           </button>
@@ -158,6 +236,23 @@ const App: React.FC = () => {
           </select>
 
           <select
+            value={filterCategory || ""}
+            onChange={(e) => setFilterCategory(e.target.value || null)}
+            className="filter-select"
+          >
+            <option value="">All Categories</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+
+          <div className="filter-tags">
+            <TagSelector tags={tags} selectedTags={filterTags} onChange={setFilterTags} />
+          </div>
+
+          <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as "dueDate" | "priority" | "title")}
             className="sort-select"
@@ -171,6 +266,7 @@ const App: React.FC = () => {
 
       <TodoList
         tasks={sortedTasks}
+        categories={categories}
         deleteTask={deleteTask}
         updateTask={updateTask}
         editingTitle={editingTitle}

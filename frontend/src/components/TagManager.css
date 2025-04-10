@@ -1,0 +1,239 @@
+.tag-manager {
+  background: rgba(20, 20, 35, 0.95);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid rgba(66, 220, 255, 0.2);
+  margin: 2rem 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tag-manager h2 {
+  color: #e0e0e0;
+  margin-bottom: 2rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: left;
+  text-shadow: 0 0 10px rgba(66, 220, 255, 0.5);
+}
+
+.tag-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  background: rgba(30, 30, 50, 0.9);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(66, 220, 255, 0.1);
+}
+
+.input-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.input-label {
+  color: #e0e0e0;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tag-input {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #2f4f9e;
+  border-radius: 6px;
+  background: rgba(20, 20, 35, 0.9);
+  color: #e0e0e0;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.tag-input:focus {
+  border-color: #42dcff;
+  box-shadow: 0 0 10px rgba(66, 220, 255, 0.3);
+  outline: none;
+}
+
+.color-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100px;
+}
+
+.color-picker {
+  width: 100%;
+  height: 45px;
+  padding: 5px;
+  border: 2px solid #2f4f9e;
+  border-radius: 6px;
+  background: rgba(20, 20, 35, 0.9);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.color-picker:hover {
+  border-color: #42dcff;
+  box-shadow: 0 0 10px rgba(66, 220, 255, 0.3);
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.create-tag-btn {
+  padding: 1rem 1.5rem;
+  background: linear-gradient(45deg, #42dcff 0%, #2f4f9e 100%);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  min-width: 160px;
+}
+
+.create-tag-btn:hover {
+  background: linear-gradient(45deg, #2f4f9e 0%, #42dcff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(66, 220, 255, 0.3);
+}
+
+.create-tag-btn i {
+  font-size: 1.1rem;
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1rem;
+  background: rgba(30, 30, 50, 0.9);
+  border-radius: 8px;
+  border: 1px solid rgba(66, 220, 255, 0.1);
+}
+
+.tags-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tags-list::-webkit-scrollbar-track {
+  background: rgba(20, 20, 35, 0.9);
+  border-radius: 4px;
+}
+
+.tags-list::-webkit-scrollbar-thumb {
+  background: #2f4f9e;
+  border-radius: 4px;
+}
+
+.tags-list::-webkit-scrollbar-thumb:hover {
+  background: #42dcff;
+}
+
+.tag-item-manager {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(20, 20, 35, 0.9);
+  border-radius: 20px;
+  border: 1px solid;
+  transition: all 0.3s ease;
+  height: 32px;
+}
+
+.tag-item-manager:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(66, 220, 255, 0.2);
+}
+
+.tag-name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.tag-name i {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.delete-tag-btn {
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 62, 136, 0.2);
+  border: 1px solid rgba(255, 62, 136, 0.3);
+  border-radius: 50%;
+  color: #ffffff;
+  font-family: "Rajdhani", sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin-left: 0.4rem;
+  line-height: 1;
+}
+
+.delete-tag-btn:hover {
+  color: #ffffff;
+  background: #ff3e88;
+  border-color: #ff3e88;
+  transform: none;
+  box-shadow: 0 0 8px rgba(255, 62, 136, 0.4);
+}
+
+@media (max-width: 768px) {
+  .input-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .color-group {
+    width: 100%;
+  }
+
+  .button-row {
+    justify-content: stretch;
+  }
+
+  .create-tag-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

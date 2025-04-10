@@ -1,0 +1,30 @@
+.category-selector {
+  width: 100%;
+  min-width: 140px;
+}
+
+.category-select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #2f4f9e;
+  border-radius: 4px;
+  background: rgba(20, 20, 35, 0.9);
+  color: #e0e0e0;
+  cursor: pointer;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.category-select:focus {
+  border-color: #42dcff;
+  background: rgba(30, 30, 45, 0.9);
+  box-shadow: 0 0 15px rgba(66, 220, 255, 0.2);
+  outline: none;
+}
+
+.category-select option {
+  background-color: #1a1a2f;
+  color: #e0e0e0;
+  padding: 10px;
+}

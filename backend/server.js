@@ -33,8 +33,14 @@ const connectDB = async () => {
 connectDB();
 
 // BLOCK 5: Defining Routes
-const tasksRoutes = require("./routes/tasks");
-app.use("/api/tasks", tasksRoutes);
+const taskRoutes = require("./routes/tasks");
+const categoryRoutes = require("./routes/categories");
+const tagRoutes = require("./routes/tags");
+
+// Routes
+app.use("/api/tasks", taskRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/tags", tagRoutes);
 
 // BLOCK 6: Starting the Server
 const PORT = process.env.PORT || 5000;
