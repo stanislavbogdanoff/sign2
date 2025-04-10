@@ -1,63 +1,92 @@
+/* Import cyberpunk-style fonts */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@300;400;500;600&display=swap");
+
 /* Center the app in the middle of the screen */
-html, body {
+html,
+body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4; /* Light gray background */
+  font-family: "Rajdhani", sans-serif;
+  background-color: #0a0a15;
   width: 100%;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: hidden;
+  color: #e0e0e0;
+  background: linear-gradient(135deg, #0a0a15 0%, #1a1a2f 100%);
 }
 
 /* Style the main app container */
 .App {
   text-align: center;
-  background: white;
-  padding: 20px;
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Light shadow effect */
-  width: 90%; /* Make it flexible */
-  max-width: 350px; /* Prevent exceeding max size */
+  background: rgba(20, 20, 35, 0.95);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(66, 220, 255, 0.2), 0 0 40px rgba(66, 220, 255, 0.1);
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
   box-sizing: border-box;
+  border: 1px solid rgba(66, 220, 255, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 /* Add spacing below the title */
 h1 {
   margin-bottom: 20px;
-  font-size: 24px;
-  color: #333;
+  font-size: 2.5rem;
+  color: #fff;
+  font-family: "Orbitron", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(66, 220, 255, 0.8), 0 0 20px rgba(66, 220, 255, 0.4);
 }
 
 /* Style input fields */
 input {
-  width: 100%; /* Full width */
+  width: 100%;
   padding: 8px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #2f4f9e;
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
+  background-color: rgba(30, 30, 50, 0.9);
+  color: #e0e0e0;
+  font-family: "Rajdhani", sans-serif;
+}
+
+input:focus {
+  outline: none;
+  border-color: #42dcff;
+  box-shadow: 0 0 10px rgba(66, 220, 255, 0.3);
+  background-color: rgba(40, 40, 60, 0.9);
 }
 
 /* Style buttons */
 button {
-  width: 100%; /* Make buttons full width */
+  width: 100%;
   padding: 10px;
   margin-top: 5px;
   border: none;
-  background-color: #007bff; /* Blue background */
+  background: linear-gradient(45deg, #2f4f9e 0%, #42dcff 100%);
   color: white;
   cursor: pointer;
   border-radius: 5px;
   font-size: 14px;
-  transition: background-color 0.3s ease-in-out;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease-in-out;
 }
 
 /* Change button color when hovered */
 button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(45deg, #42dcff 0%, #2f4f9e 100%);
+  box-shadow: 0 0 15px rgba(66, 220, 255, 0.5);
+  transform: translateY(-1px);
 }
 
 /* Remove default list styles */
@@ -72,26 +101,35 @@ li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  padding: 10px;
-  margin: 5px 0;
+  background: rgba(30, 30, 50, 0.9);
+  padding: 15px;
+  margin: 10px 0;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   width: 100%;
   box-sizing: border-box;
+  border: 1px solid rgba(66, 220, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+li:hover {
+  background: rgba(40, 40, 60, 0.9);
+  border-color: rgba(66, 220, 255, 0.3);
+  box-shadow: 0 0 15px rgba(66, 220, 255, 0.2);
 }
 
 /* Allow task text to take available space */
 span {
   flex: 1;
-  font-size: 16px;
-  color: #333;
+  font-size: 1.1rem;
+  color: #e0e0e0;
 }
 
 /* Style completed tasks */
 span.completed {
   text-decoration: line-through;
-  color: #888;
+  color: #666;
+  text-shadow: 0 0 5px rgba(102, 102, 102, 0.5);
 }
 
 /* Adjust the width of input fields inside the list */
@@ -99,7 +137,9 @@ input[type="text"] {
   width: 70%;
   padding: 8px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
+  background-color: #3d3d3d;
+  color: #e0e0e0;
 }
 
 /* Style the checkbox */
@@ -107,7 +147,7 @@ input[type="checkbox"] {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #007bff; /* Blue checkbox to match buttons */
+  accent-color: #2196f3;
   margin-right: 10px;
 }
 
@@ -139,5 +179,154 @@ input[type="checkbox"] {
   button {
     width: 100%;
     padding: 10px;
+  }
+}
+
+.task-controls {
+  background: rgba(25, 25, 40, 0.9);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(66, 220, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.task-input {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.task-title-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.8rem;
+  border: 1px solid #2f4f9e;
+  border-radius: 4px;
+  background: rgba(20, 20, 35, 0.9);
+  color: #e0e0e0;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.task-title-input:focus {
+  border-color: #42dcff;
+  background: rgba(30, 30, 45, 0.9);
+  box-shadow: 0 0 15px rgba(66, 220, 255, 0.2);
+}
+
+.due-date-input {
+  padding: 0.8rem;
+  border: 1px solid #2f4f9e;
+  border-radius: 4px;
+  background: rgba(20, 20, 35, 0.9);
+  color: #e0e0e0;
+  font-family: "Rajdhani", sans-serif;
+  min-width: 140px;
+  transition: all 0.3s ease;
+}
+
+.due-date-input:focus {
+  border-color: #42dcff;
+  background: rgba(30, 30, 45, 0.9);
+  box-shadow: 0 0 15px rgba(66, 220, 255, 0.2);
+}
+
+.priority-select,
+.filter-select,
+.sort-select {
+  padding: 0.8rem;
+  border: 1px solid #2f4f9e;
+  border-radius: 4px;
+  background: rgba(20, 20, 35, 0.9);
+  color: #e0e0e0;
+  cursor: pointer;
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1rem;
+  min-width: 140px;
+  transition: all 0.3s ease;
+}
+
+.priority-select:focus,
+.filter-select:focus,
+.sort-select:focus {
+  border-color: #42dcff;
+  background: rgba(30, 30, 45, 0.9);
+  box-shadow: 0 0 15px rgba(66, 220, 255, 0.2);
+}
+
+.priority-select option,
+.filter-select option,
+.sort-select option {
+  background-color: #1a1a2f;
+  color: #e0e0e0;
+  padding: 10px;
+}
+
+.add-button {
+  background: linear-gradient(45deg, #ff3e88 0%, #ff7f45 100%);
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  margin: 0;
+  min-width: 120px;
+}
+
+.add-button:hover {
+  background: linear-gradient(45deg, #ff7f45 0%, #ff3e88 100%);
+  box-shadow: 0 0 20px rgba(255, 62, 136, 0.5);
+  transform: translateY(-2px);
+}
+
+.task-filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(66, 220, 255, 0.1);
+}
+
+/* Priority colors - neon theme */
+.priority-high {
+  border-left: 4px solid #ff3e88;
+  box-shadow: -2px 0 10px rgba(255, 62, 136, 0.3);
+}
+
+.priority-medium {
+  border-left: 4px solid #ffcf4a;
+  box-shadow: -2px 0 10px rgba(255, 207, 74, 0.3);
+}
+
+.priority-low {
+  border-left: 4px solid #42dcff;
+  box-shadow: -2px 0 10px rgba(66, 220, 255, 0.3);
+}
+
+/* Due date styling */
+.due-date {
+  font-size: 0.9rem;
+  color: #42dcff;
+  text-shadow: 0 0 5px rgba(66, 220, 255, 0.5);
+}
+
+.due-date.overdue {
+  color: #ff3e88;
+  text-shadow: 0 0 5px rgba(255, 62, 136, 0.5);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .task-input {
+    flex-direction: column;
+  }
+
+  .task-title-input {
+    width: 100%;
+  }
+
+  .task-filters {
+    flex-direction: column;
   }
 }

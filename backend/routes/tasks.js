@@ -16,15 +16,19 @@ router.get("/", async (req, res) => {
 
 // BLOCK 3: POST a new task
 router.post("/", async (req, res) => {
-  const { title } = req.body;
-  console.log("Received title:", title); // Debugging log
+  const { title, dueDate, priority } = req.body;
+  console.log("Received task data:", { title, dueDate, priority }); // Debugging log
 
   if (!title) {
     return res.status(400).json({ error: "Task title is required" });
   }
 
   try {
-    const newTask = new Task({ title });
+    const newTask = new Task({
+      title,
+      dueDate: dueDate || null,
+      priority: priority || "medium",
+    });
     await newTask.save();
     res.status(201).json(newTask);
   } catch (err) {
@@ -48,11 +52,11 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-  
+
     const updatedTask = await Task.findByIdAndUpdate(
       id,
       req.body,
-      { new: true } // Return the updated task
+      { new: true }, // Return the updated task
     );
     res.json(updatedTask);
   } catch (error) {
